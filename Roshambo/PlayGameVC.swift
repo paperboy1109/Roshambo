@@ -36,31 +36,7 @@ class PlayGameVC: UIViewController {
             controller.playerAction = .SCISSORS
         }
     }
-    
-    /**
-     * Randomly chooses an action for the opponent (virutal player)
-     */
-//    func randomRPS() -> Action {
-//        
-//        let randomValue = Int(1 + arc4random() % 3)
-//        
-//        switch randomValue {
-//            
-//        case 1 :
-//            return "rock"
-//            
-//        case 2 :
-//            return "paper"
-//            
-//        case 3 :
-//            return "scissors"
-//            
-//        default :
-//            return "rock"
-//            
-//        }
-//        
-//    }
+
     
     
      /**

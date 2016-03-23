@@ -11,8 +11,6 @@ import UIKit
 class GameOutcomeVC: UIViewController {
 
     @IBOutlet var gameOutcomeImg: UIImageView!
-    
-    @IBOutlet var playAgainBtn: UILabel!
     @IBOutlet var gameOutcomeLbl: UILabel!
     
     enum Action: String {
@@ -31,22 +29,14 @@ class GameOutcomeVC: UIViewController {
         
         opponentAction = self.randomRPS()
         
+        print("*viewWillAppear*")
         print(opponentAction)
         print(playerAction)
         
         if let playerAction = self.playerAction, opponentAction = self.opponentAction {
             
-            if playerAction.rawValue == "rock" {
-                if opponentAction.rawValue == "rock" {
-                    gameOutcomeImg.image = UIImage(named: "itsATie")
-                } else if opponentAction.rawValue == "paper" {
-                    gameOutcomeImg.image = UIImage(named: "PaperCoversRock")
-                } else if opponentAction.rawValue == "scissors" {
-                    gameOutcomeImg.image = UIImage(named: "RockCrushesScissors")
-                } else {
-                    gameOutcomeImg.image = nil
-                }
-            }
+            determineWinner(playerAction, opponentAction: opponentAction)
+            announceOutcome()
 
         }
     }
@@ -55,16 +45,16 @@ class GameOutcomeVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("*viewDidLoad*")
         print(opponentAction)
         print(playerAction)
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+
     
-    
+    /**
+     *    generate a random move for the opponent (computer player)
+     */
     func randomRPS() -> Action {
 
         let randomValue = Int(1 + arc4random() % 3)
@@ -87,6 +77,74 @@ class GameOutcomeVC: UIViewController {
         }
         
     }
+    
+    /**
+     *    determine who won the game and show the appropriate image
+     */
+    func determineWinner(playerAction: Action, opponentAction: Action) {
+        
+        if playerAction.rawValue == "rock" {
+            if opponentAction.rawValue == "rock" {
+                gameOutcomeImg.image = UIImage(named: "itsATie")
+            } else if opponentAction.rawValue == "paper" {
+                gameOutcomeImg.image = UIImage(named: "PaperCoversRock")
+            } else if opponentAction.rawValue == "scissors" {
+                gameOutcomeImg.image = UIImage(named: "RockCrushesScissors")
+            } else {
+                gameOutcomeImg.image = nil
+            }
+            
+        } else if playerAction.rawValue == "paper" {
+            if opponentAction.rawValue == "rock" {
+                gameOutcomeImg.image = UIImage(named: "PaperCoversRock")
+            } else if opponentAction.rawValue == "paper" {
+                gameOutcomeImg.image = UIImage(named: "itsATie")
+            } else if opponentAction.rawValue == "scissors" {
+                gameOutcomeImg.image = UIImage(named: "ScissorsCutPaper")
+            } else {
+                gameOutcomeImg.image = nil
+            }
+        } else if playerAction.rawValue == "scissors" {
+            if opponentAction.rawValue == "rock" {
+                gameOutcomeImg.image = UIImage(named: "RockCrushesScissors")
+            } else if opponentAction.rawValue == "paper" {
+                gameOutcomeImg.image = UIImage(named: "ScissorsCutPaper")
+            } else if opponentAction.rawValue == "scissors" {
+                gameOutcomeImg.image = UIImage(named: "itsATie")
+            } else {
+                gameOutcomeImg.image = nil
+            }
+        }
+        
+    }
+    
+    /**
+     *    Show a message according to who won
+     */
+    func announceOutcome() {
+        if gameOutcomeImg.image == UIImage(named: "itsATie") {
+            gameOutcomeLbl.text = "It's a tie"
+        } else if gameOutcomeImg.image == UIImage(named: "PaperCoversRock") {
+            gameOutcomeLbl.text = "Paper Covers Rock"
+        } else if gameOutcomeImg.image == UIImage(named: "RockCrushesScissors") {
+            gameOutcomeLbl.text = "Rock Crushes Scissors"
+        } else if gameOutcomeImg.image == UIImage(named: "ScissorsCutPaper") {
+            gameOutcomeLbl.text = "Scissors Cut Paper"
+        } else {
+            gameOutcomeLbl.text = "Sorry, an error has occurred"
+        }
+    }
+    
+    
+    /**
+     *    dismiss this view controller
+     */
+    @IBAction func dismiss() {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    
+    
 
     
 }
